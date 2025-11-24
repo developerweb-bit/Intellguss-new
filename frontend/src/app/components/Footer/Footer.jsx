@@ -108,7 +108,7 @@ export default function Footer() {
            
          
              <li>
-                <Link href="/Blog">
+                <Link href="/blog">
                   <span className="text-white fs-[14px]    hover:text-[#FD0D07]">
                     Blog
                   </span>

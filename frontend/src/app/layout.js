@@ -1,7 +1,8 @@
-import { Inter  } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
+import LazyLoader from "./components/Lazyloader/Lazyloader";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,10 +24,10 @@ export default function RootLayout({ children }) {
       <body
         className={`
           ${inter.variable}
-          antialiased`
-        }
+          antialiased`}
         // ${geistSans.variable}
       >
+        {/* <LazyLoader /> */}
         <Navbar />
         {children}
         <Footer />

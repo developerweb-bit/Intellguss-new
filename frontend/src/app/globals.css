@@ -1,8 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  /* --background: #ffffff;
-  --foreground: #171717; */
+  --background: #d73a32;
+  --foreground: #171717;
+  --primary-color: #d73a32;
+  --secondary-color: #1a73e8;
+  --font-geist-sans: "Geist Sans", sans-serif;
+  --font-geist-mono: "Geist Mono", monospace;
+  --greadient-color:  linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #f0f7ff 35%,
+    #e9f0ff 70%,
+    #f7ecff 100%
+  );
+
 }
 
 /* 
@@ -43,7 +55,6 @@ body {
   box-sizing: border-box;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
-
 }
 
 /* Smooth fonts */
@@ -98,6 +109,10 @@ h6 {
 
 a {
   text-decoration: none;
+}
+
+button{
+  cursor: pointer;
 }
 
 ul,
@@ -167,4 +182,23 @@ li {
     transparent,
     rgba(255, 255, 255, 0.3)
   );
+}
+
+
+/* i phone */
+.glass-bg {
+  background: rgba(255, 255, 255, 0.15); /* semi-transparent white */
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+.glass-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 999;
 }

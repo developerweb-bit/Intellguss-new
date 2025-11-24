@@ -1,0 +1,262 @@
+.knowledge-center {
+  padding: 80px 0;
+  background-color: var(----greadient-color);
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .head {
+    font-size: 42px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 15px;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 3px;
+    }
+  }
+  
+  .subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 40px;
+  }
+  
+  .filter-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    
+    button {
+      background: none;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 16px;
+      cursor: pointer;
+      position: relative;
+      color: #555;
+      
+      &:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary-color);
+        transition: width 0.3s;
+      }
+      
+      &.active {
+        font-weight: 600;
+        color: var(--primary-color);
+        
+        &:after {
+          width: 100%;
+        }
+      }
+    }
+  }
+  
+  .knowledge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+  }
+  
+  .knowledge-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: white;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eaeaea;
+    
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(29, 52, 164, 0.15);
+      border-color: var(--primary-color);
+    }
+    
+    .card-image {
+      height: 200px;
+      position: relative;
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .category-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+      }
+    }
+    
+    .card-content {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      
+      h3 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 20px;
+        color: var(--secondary-color);
+        font-weight: 600;
+      }
+      
+      p {
+        color: #555;
+        margin-bottom: 15px;
+        line-height: 1.5;
+      }
+      
+      .date, .client {
+        display: block;
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 5px;
+      }
+      
+      .metrics-summary {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 10px 0;
+        gap: 10px;
+        
+        .metric {
+          background-color: #f5f5f5;
+          padding: 5px 10px;
+          border-radius: 5px;
+          font-size: 13px;
+          color: #555;
+          
+          strong {
+            color: var(--secondary-color);
+          }
+        }
+      }
+      
+      .read-more {
+        display: inline-block;
+        margin-top: auto;
+        padding: 8px 15px;
+        background-color: var(--primary-color);
+        
+        text-decoration: none;
+        font-weight: 500;
+        border-radius: 5px;
+        align-self: flex-start;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          background-color: var(--secondary-color);
+          color: white;
+        }
+      }
+    }
+  }
+  
+  .cta-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 60px;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 60px;
+    
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: white;
+    }
+    
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      color: white;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      
+      .cta-button {
+        background-color: white;
+        color: var(--secondary-color);
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        &.secondary {
+          background-color: transparent;
+          border: 2px solid white;
+          color: white;
+          
+          &:hover {
+            background-color: white;
+            color: var(--secondary-color);
+          }
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .knowledge-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .filter-tabs {
+      flex-wrap: wrap;
+      
+      button {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
