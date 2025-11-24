@@ -42,6 +42,8 @@ body {
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+
 }
 
 /* Smooth fonts */
@@ -53,7 +55,10 @@ body {
     #e9f0ff 70%,
     #f7ecff 100%
   );
-  background-color: red ;
+  background-color: red;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+  font-family: "Inter", sans-serif;
 
   /* font-weight: 400; */
   /* font-family: "Inter", sans-serif; */
@@ -81,7 +86,6 @@ h6 {
   font-weight: 700;
 }
 
-
 .globbg {
   background: linear-gradient(
     to bottom,
@@ -92,11 +96,9 @@ h6 {
   );
 }
 
-
 a {
   text-decoration: none;
 }
-
 
 ul,
 ol,
@@ -113,7 +115,6 @@ li {
 }
 
 .glaccybg {
- 
   background: rgba(255, 255, 255, 0.2);
 
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);

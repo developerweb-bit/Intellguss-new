@@ -246,7 +246,7 @@ export default function Footer() {
           className={`${style.largeText} mb-5 text-end mr-40 `}
         >
           <Link href="/">
-            <span className={`${style.spantext} text-[#fff] latter-specing-0`}><span className="text-[#FD0D07]">I</span>ntellgu<span className="text-[#FD0D07]">s</span> </span>
+            <span  className={`${style.spantext} text-[#fff] latter-specing-0`}><span className="text-[#FD0D07]">I</span>ntellgu<span className="text-[#FD0D07]">s</span> </span>
           </Link>
         </h2>
       </div>

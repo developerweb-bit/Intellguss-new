@@ -1,13 +1,12 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter  } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
 // const geistMono = Geist_Mono({
 //   variable: "--font-geist-mono",
 //   subsets: ["latin"],
@@ -23,8 +22,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
         className={`
-          antialiased`}
-        //  ${geistMono.variable}
+          ${inter.variable}
+          antialiased`
+        }
         // ${geistSans.variable}
       >
         <Navbar />

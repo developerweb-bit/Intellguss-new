@@ -1,12 +1,12 @@
 // File: /pages/index.js
-"use client"
+"use client";
 import Head from "next/head";
 import { useState, useRef, useEffect } from "react";
 import styles from "./contact.module.scss";
-// import Navbar from "@/components/Navbar/Navbar";
-// import Footer from "@/components/Footer/Footer";
 
-export default function page() {
+import SplashCursor from "@/app/components/SplashCursor/SplashCursor";
+
+export default function index() {
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -20,7 +20,15 @@ export default function page() {
   const [fileName, setFileName] = useState("");
   const fileInputRef = useRef(null);
 
-  const services = ["Consulting", "Design", "Engineering", "Strategy"];
+  // const services = ["Consulting", "Design", "Engineering", "Strategy"];
+  const services = [
+    "Audit",
+    "Virtual CFO",
+    "Tax Resolution",
+    "Payroll Management",
+    "Bookkeeping & Accounting",
+    "Tax Planning & Preparation",
+  ];
   const budgets = ["Less than $10K", "$10K - $50K", "More than $50K"];
 
   const validate = () => {
@@ -231,114 +239,248 @@ export default function page() {
   // }, []);
   const boxRef = useRef(null);
 
+  // useEffect(() => {
+  //   const canvas = canvasRef.current;
+  //   const box = boxRef.current;
+  //   if (!canvas || !box) return;
+  //   const ctx = canvas.getContext("2d");
+  //   if (!ctx) return;
+
+  //   // set canvas size equal to the div size (handle devicePixelRatio for crisp lines)
+  //   const resizeCanvas = () => {
+  //     const dpr = window.devicePixelRatio || 1;
+  //     const width = box.offsetWidth;
+  //     const height = box.offsetHeight;
+
+  //     // set CSS size
+  //     canvas.style.width = width + "px";
+  //     canvas.style.height = height + "px";
+
+  //     // set actual pixel size for high DPI
+  //     canvas.width = Math.round(width * dpr);
+  //     canvas.height = Math.round(height * dpr);
+
+  //     // reset transform and scale to DPR
+  //     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  //   };
+  //   resizeCanvas();
+
+  //   let points = [];
+  //   let stopTimer = null;
+  //   let isMoving = false;
+
+  //   const addPoint = (x, y) => {
+  //     points.push({ x, y });
+  //     if (points.length > 40) points.shift();
+  //   };
+
+  //   const drawLine = () => {
+  //     // clear using CSS-coordinates (ctx is scaled to DPR already)
+  //     ctx.clearRect(0, 0, box.offsetWidth, box.offsetHeight);
+
+  //     if (isMoving && points.length > 1) {
+  //       ctx.lineWidth = 1;
+  //       ctx.strokeStyle = "linear-gradient(90deg, #ff5f6d, #ffc371)";
+  //       ctx.lineCap = "round";
+  //       ctx.lineJoin = "round";
+
+  //       ctx.beginPath();
+  //       ctx.moveTo(points[0].x, points[0].y);
+
+  //       for (let i = 1; i < points.length; i++) {
+  //         ctx.lineTo(points[i].x, points[i].y);
+  //       }
+
+  //       ctx.stroke();
+  //     }
+
+  //     requestAnimationFrame(drawLine);
+  //   };
+
+  //   const handleMouseMove = (e) => {
+  //     const rect = box.getBoundingClientRect();
+
+  //     // check if cursor not inside div
+  //     if (
+  //       e.clientX < rect.left ||
+  //       e.clientX > rect.right ||
+  //       e.clientY < rect.top ||
+  //       e.clientY > rect.bottom
+  //     ) {
+  //       points = [];
+  //       isMoving = false;
+  //       return;
+  //     }
+
+  //     isMoving = true;
+
+  //     // Convert global cursor → local div coordinates
+  //     const x = e.clientX - rect.left;
+  //     const y = e.clientY - rect.top;
+
+  //     addPoint(x, y);
+
+  //     clearTimeout(stopTimer);
+  //     stopTimer = setTimeout(() => {
+  //       points = [];
+  //       isMoving = false;
+  //     }, 200);
+  //   };
+
+  //   window.addEventListener("mousemove", handleMouseMove);
+  //   window.addEventListener("resize", resizeCanvas);
+
+  //   drawLine();
+
+  //   return () => {
+  //     window.removeEventListener("mousemove", handleMouseMove);
+  //     window.removeEventListener("resize", resizeCanvas);
+  //   };
+  // }, []);
+
+  // ...existing code...
   useEffect(() => {
     const canvas = canvasRef.current;
     const box = boxRef.current;
+    if (!canvas || !box) return;
     const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-    // set canvas size equal to the div size
+    const dpr = window.devicePixelRatio || 1;
     const resizeCanvas = () => {
-      canvas.width = box.offsetWidth;
-      canvas.height = box.offsetHeight;
+      const width = box.offsetWidth;
+      const height = box.offsetHeight;
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resizeCanvas();
 
     let points = [];
-    let stopTimer = null;
-    let isMoving = false;
+    let rafId = null;
 
     const addPoint = (x, y) => {
-      points.push({ x, y });
-      if (points.length > 40) points.shift();
+      const t = performance.now();
+      points.push({ x, y, t });
+      if (points.length > 60) points.shift();
     };
 
-    const drawLine = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // draw a smooth trailing, with glow layers for a nicer look
+    const draw = () => {
+      ctx.clearRect(0, 0, box.offsetWidth, box.offsetHeight);
 
-      if (isMoving && points.length > 1) {
-        ctx.lineWidth = 4;
-        ctx.strokeStyle = "#ff5f6d";
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
+      if (points.length > 1) {
+        // Glow layers (soft, behind main stroke)
+        for (let layer = 15; layer >= 1; layer--) {
+          ctx.beginPath();
+          ctx.lineJoin = "round";
+          ctx.lineCap = "round";
+          ctx.shadowBlur = layer * 8;
+          ctx.shadowColor = `rgba(255,95,109,${0.03 * layer})`;
+          ctx.strokeStyle = `rgba(255,95,109,${0.08 * layer})`;
+          ctx.lineWidth = (1 * layer) / 5;
 
-        ctx.beginPath();
-        ctx.moveTo(points[0].x, points[0].y);
-
-        for (let i = 1; i < points.length; i++) {
-          ctx.lineTo(points[i].x, points[i].y);
+          ctx.moveTo(points[0].x, points[0].y);
+          for (let i = 1; i < points.length; i++) {
+            const prev = points[i - 1];
+            const cur = points[i];
+            const cx = (prev.x + cur.x) / 2;
+            const cy = (prev.y + cur.y) / 2;
+            ctx.quadraticCurveTo(prev.x, prev.y, cx, cy);
+          }
+          ctx.stroke();
         }
 
-        ctx.stroke();
+        // Main crisp stroke (no shadow)
+        ctx.shadowBlur = 0;
+        ctx.beginPath();
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#ff5f6d";
+        ctx.lineWidth = 0;
+
+        // dynamic alpha on tail: older points are more transparent
+        for (let i = 0; i < points.length - 1; i++) {
+          const p0 = points[i];
+          const p1 = points[i + 1];
+          const ageFactor = i / points.length; // 0 = head, 1 = tail
+          ctx.strokeStyle = `rgba(255,95,109,${Math.max(
+            0.12,
+            0.9 - ageFactor * 0.9
+          )})`;
+
+          ctx.beginPath();
+          const cx = (p0.x + p1.x) / 2;
+          const cy = (p0.y + p1.y) / 2;
+          ctx.moveTo(p0.x, p0.y);
+          ctx.quadraticCurveTo(p0.x, p0.y, cx, cy);
+          ctx.stroke();
+        }
       }
 
-      requestAnimationFrame(drawLine);
+      rafId = requestAnimationFrame(draw);
     };
 
     const handleMouseMove = (e) => {
       const rect = box.getBoundingClientRect();
 
-      // check if cursor not inside div
+      // if cursor outside box, clear trail gently
       if (
         e.clientX < rect.left ||
         e.clientX > rect.right ||
         e.clientY < rect.top ||
         e.clientY > rect.bottom
       ) {
-        points = [];
-        isMoving = false;
+        // shrink points to fade out smoothly
+        if (points.length) points.splice(0, Math.min(6, points.length));
         return;
       }
 
-      isMoving = true;
-
-      // Convert global cursor → local div coordinates
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-
       addPoint(x, y);
-
-      clearTimeout(stopTimer);
-      stopTimer = setTimeout(() => {
-        points = [];
-        isMoving = false;
-      }, 200);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("resize", resizeCanvas);
 
-    drawLine();
+    draw();
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", resizeCanvas);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
+  // ...existing code...
 
   return (
     <>
-     
       <Head>
         <title>Contact — Your Agency</title>
         <meta name="description" content="Tell us about your project" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-100 flex items-center justify-center py-12 px-6">
+      <div className="min-h-screen  bg-gradient-to-b from-white to-gray-100 flex items-center justify-center py-12 px-6">
         <div className="w-full max-w-6xl">
           {/* Container card */}
-          <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+          <div className="relative bg-white  rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
             <div className="grid grid-cols-1 md:grid-cols-2">
               {/* Left Panel */}
-              <div className="p-10 md:pl-14 md:pr-8 lg:pl-20 lg:pr-12 overflow-hidden ">
+              <div className="p-10 md:pl-14 md:pr-8 lg:pl-20 lg:pr-12 overflow-hidden relative">
                 <div
-                  ref={boxRef}
-                  className="rounded-xl border relative overflow-hidden h-full p-6 pb-10 bg-gradient-to-br from-blue-50 via-white to-blue-50 flex flex-col justify-between items-start"
+                  className="rounded-xl  relative overflow-hidden h-full cursor-non p-6 pb-10 bg-gradient-to-br from-blue-50 via-white to-blue-50 flex flex-col justify-between items-start"
                   aria-hidden="false"
+                  style={{ backdropFilter: "sepia(1%)" }}
                 >
-                  <canvas
+                  <SplashCursor />
+
+                  {/* <canvas
                     ref={canvasRef}
-                    className="fixed top-0 left-0 pointer-events-none z-[9999]"
-                  />
+                    className="absolute inset-0 w-full h-full pointer-events-none z-10"
+                  /> */}
                   <div>
                     <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
                       Tell us about your <br /> project
@@ -378,7 +520,7 @@ export default function page() {
                     </p>
                     <button
                       type="button"
-                      className="mt-4 inline-block bg-white border border-gray-200 px-4 py-2 rounded-full text-sm font-medium shadow-sm hover:bg-gray-50"
+                      className="mt-4 inline-block bg-white cursor-pointer border border-gray-200 px-4 py-2 rounded-full text-sm font-medium shadow-sm hover:bg-gray-50"
                     >
                       Book a free call
                     </button>
@@ -461,9 +603,9 @@ export default function page() {
                   onDragOver={(e) => e.preventDefault()}
                 >
                   {/* Service & Budget */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className="grid grid-cols-1 md:grid-cols-1  gap-6 ">
+                    <div className="">
+                      <label className="block text-sm  font-medium text-gray-700 mb-2">
                         Service
                       </label>
                       <div className="flex flex-wrap gap-2">
@@ -472,7 +614,7 @@ export default function page() {
                             key={s}
                             type="button"
                             onClick={() => handleServiceSelect(s)}
-                            className={`text-sm px-3 py-1 rounded-full border ${
+                            className={`text-sm px-3 py-1 rounded-full border cursor-pointer ${
                               form.service === s
                                 ? "bg-gray-900 text-white border-gray-900"
                                 : "bg-white text-gray-700 border-gray-300"
@@ -494,7 +636,7 @@ export default function page() {
                             key={b}
                             type="button"
                             onClick={() => handleBudgetSelect(b)}
-                            className={`text-sm px-3 py-1 rounded-full border ${
+                            className={`text-sm px-3 py-1 rounded-full border  ${
                               form.budget === b
                                 ? "bg-gray-900 text-white border-gray-900"
                                 : "bg-white text-gray-700 border-gray-300"
@@ -651,10 +793,8 @@ export default function page() {
         </div>
       </div>
 
-     
-
       <style>{`
-     
+        /* subtle entrance animation for the main card */
         .card-anim {
           animation: fadeUp 480ms ease;
         }
